@@ -91,7 +91,7 @@ require 'cek.php';
                             ?>
                             <div class="alert alert-danger alert-dismissible">
                                 <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                <strong>Danger!</strong> Barang <?=$barang;?> telah habis
+                                <strong>Perhatian!</strong> Barang <?=$barang;?> telah habis
                             </div>
                             <?php
                             }

@@ -231,9 +231,10 @@ if (isset($_POST['deletebarangkeluar'])) {
 
 ?>
 
-//Menambah Admin baru
+
 
 <?php
+// Menambah data admin 
 if(isset($_POST['addadmin'])){
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -248,9 +249,10 @@ if(isset($_POST['addadmin'])){
 }
 ?>  
 
-//edit data admin
+
 
 <?php
+// Mengupdate data admin 
     if(isset($_POST['updateadmin'])){
         $emailbaru = $_POST['emailadmin'];
         $passwordbaru = $_POST['passwordbaru'];
@@ -266,8 +268,9 @@ if(isset($_POST['addadmin'])){
     }
 ?>
 
-//hapus data admin
+
 <?php
+// Menghapus data admin 
     if(isset($_POST['deleteadmin'])){
         $iduser = $_POST['delete_iduser'];
 
