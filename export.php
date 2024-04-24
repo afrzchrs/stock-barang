@@ -85,5 +85,3 @@ $(document).ready(function() {
 
 </html>
 
-export.php
-Menampilkan export.php.

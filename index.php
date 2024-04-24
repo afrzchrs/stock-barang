@@ -15,6 +15,15 @@ require 'cek.php';
     <link href="css/styles.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
+    <style>
+        .zoomable{
+            width: 100px;
+        }
+        .zoomable:hover{
+            transform: scale(2.5);
+            transition: 0.3s ease;
+        }
+    </style>
 </head>
 
 <body class="sb-nav-fixed">
@@ -57,6 +66,10 @@ require 'cek.php';
                         <a class="nav-link" href="admin.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Kelola Admin
+                        </a>
+                        <a class="nav-link" href="peminjaman.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Peminjaman Barang
                         </a>
                     </div>
                 </div>
@@ -102,6 +115,7 @@ require 'cek.php';
                                     <thead>
                                         <tr>
                                             <th>No</th>
+                                            <th>Gambar</th>
                                             <th>Nama Barang</th>
                                             <th>Deskripsi</th>
                                             <th>Stock</th>
@@ -117,9 +131,21 @@ require 'cek.php';
                                             $deskripsi = $takerow['deskripsi'];
                                             $stock = $takerow['stock'];
                                             $idb   = $takerow['idbarang'];
+
+                                            // cek ada gambbar atau tidak
+                                            $gambar = $takerow['image'];
+                                            if($gambar==null){
+                                                //jika tidak ada 
+                                                $img = 'No Photo';
+                                            }else{
+                                                //jika ada
+                                                $img = '<img src="image/'.$gambar.'" class="zoomable">';
+                                            }
+
                                         ?>
                                             <tr>
                                                 <td><?= $i++; ?></td>
+                                                <td><?= $img; ?></td>
                                                 <td><?= $namabarang; ?></td>
                                                 <td><?= $deskripsi; ?></td>
                                                 <td><?= $stock; ?></td>
@@ -145,11 +171,12 @@ require 'cek.php';
                                                         </div>
 
                                                         <!-- Modal body -->
-                                                        <form method="post">
+                                                        <form method="post" enctype="multipart/form-data">
                                                             <div class="modal-body">
                                                                 <input type="text" name="namabarang" value='<?= $namabarang; ?>' class="form-control" required><br>
                                                                 <input type="text" name="deskripsi" value='<?= $deskripsi; ?>' class="form-control" required><br>
                                                                 <input type="number" name="stock" value='<?= $stock; ?>' class="form-control" required><br>
+                                                                <input type="file" name="file" class="form-control"><br>
                                                                 <input type="hidden" name="idb" value='<?= $idb; ?>' class="form-control" required><br>
                                                                 <button type="submit" class="btn btn-primary" name="updatebarang">Submit</button>
                                                             </div>
@@ -228,11 +255,12 @@ require 'cek.php';
             </div>
 
             <!-- Modal body -->
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <div class="modal-body">
                     <input type="text" name="namabarang" placeholder="Nama Barang" class="form-control" required><br>
                     <input type="text" name="deskripsi" placeholder="Deskripsi barang" class="form-control" required><br>
                     <input type="number" name="stock" placeholder="Stock" class="form-control" required><br>
+                    <input type="file" name="file" class="form-control"><br>
                     <button type="submit" class="btn btn-primary" name="addnewbarang">Submit</button>
                 </div>
             </form>

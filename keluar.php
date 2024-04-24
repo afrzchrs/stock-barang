@@ -15,6 +15,15 @@ require 'cek.php';
     <link href="css/styles.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
+    <style>
+        .zoomable{
+            width: 100px;
+        }
+        .zoomable:hover{
+            transform: scale(2.5);
+            transition: 0.3s ease;
+        }
+    </style>
 </head>
 
 <body class="sb-nav-fixed">
@@ -58,6 +67,10 @@ require 'cek.php';
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Kelola Admin
                         </a>
+                        <a class="nav-link" href="peminjaman.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Peminjaman Barang
+                        </a>
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
@@ -85,6 +98,7 @@ require 'cek.php';
                                     <thead>
                                         <tr>
                                             <th>tanggal</th>
+                                            <th>Gambar</th>
                                             <th>Nama Barang</th>
                                             <th>Jumlah</th>
                                             <th>Penerima</th>
@@ -102,9 +116,20 @@ require 'cek.php';
                                             $namabarang = $takerow['namabarang']; // Corrected column name
                                             $penerima = $takerow['penerima'];
                                             $qty = $takerow['qty'];
+
+                                            // cek ada gambbar atau tidak
+                                            $gambar = $takerow['image'];
+                                            if($gambar==null){
+                                                //jika tidak ada 
+                                                $img = 'No Photo';
+                                            }else{
+                                                //jika ada
+                                                $img = '<img src="image/'.$gambar.'" class="zoomable">';
+                                            }
                                         ?>
                                             <tr>
                                                 <td><?= $tanggal; ?></td>
+                                                <td><?= $img;?></td>
                                                 <td><?= $namabarang; ?></td> <!-- Corrected variable name -->
                                                 <td><?= $qty; ?></td>
                                                 <td><?= $penerima; ?></td>
