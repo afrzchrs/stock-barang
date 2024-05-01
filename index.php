@@ -69,7 +69,7 @@ require 'cek.php';
                         </a>
                         <a class="nav-link" href="peminjaman.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Peminjaman Barang
+                            Penyewaan Barang
                         </a>
                     </div>
                 </div>

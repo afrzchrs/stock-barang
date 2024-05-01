@@ -11,7 +11,7 @@ require 'cek.php';
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Barang Keluar</title>
+    <title>Sewa Barang</title>
     <link href="css/styles.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
@@ -28,7 +28,7 @@ require 'cek.php';
 
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand" href="index.html">CRUD LOGISTIC</a>
+        <a class="navbar-brand" href="index.html">REZKY ELECTRIC</a>
         <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
         <!-- Navbar-->
         <ul class="navbar-nav ml-auto ml-md-0">
@@ -69,7 +69,7 @@ require 'cek.php';
                         </a>
                         <a class="nav-link" href="peminjaman.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Peminjaman Barang
+                            Penyewaan Barang
                         </a>
                     </div>
                 </div>
@@ -84,13 +84,14 @@ require 'cek.php';
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid">
-                    <h1 class="mt-4">Data Barang Rental</h1>
+                    <h1 class="mt-4">Data Barang Sewa</h1>
                     <div class="card mb-4">
                         <div class="card-header">
                             <!-- Button to Open the Modal -->
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                                Tambah Data Rental
+                                Tambah Data Penyewaan
                             </button>
+                            <a class="btn btn-primary" href="export.php">Export data</a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -138,10 +139,6 @@ require 'cek.php';
                                                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#edit<?= $idp ?>">
                                                         Selesai
                                                     </button>
-                                                    <input type="hidden" name="hapusidbarang" value="<?= $idp; ?>">
-                                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete<?= $idp ?>">
-                                                        Delete 
-                                                    </button>
                                                 </td>
                                             </tr>
                                             <!-- Modal Selesai -->
@@ -158,9 +155,9 @@ require 'cek.php';
                                                         <!-- Modal body -->
                                                         <form method="post">
                                                             <div class="modal-body">
-                                                                Apakah peminjaman barang ini sudah selesai dipinjam?<br>
+                                                                Apakah peminjaman barang ini sudah selesai dirental?<br>
                                                                 <input type="hidden" name="idp" value='<?= $idp; ?>' class="form-control" required>
-                                                                <input type="hidden" name="idb" value='<?= $idb; ?>' class="form-control" required>
+                                                                <input type="hidden" name="idb" value='<?= $idb; ?>' class="form-control" required><br>
                                                                 <button type="submit" class="btn btn-primary" name="barangkembali">YES</button>
                                                             </div>
                                                             
@@ -169,32 +166,6 @@ require 'cek.php';
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- The Delete Modal -->
-                                            <div class="modal fade" id="delete<?= $idp; ?>">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-
-                                                        <!-- Modal Header -->
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title">Hapus Data Barang?</h4>
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        </div>
-
-                                                        <!-- Modal body -->
-                                                        <form method="post">
-                                                            <div class="modal-body">
-                                                                Apakah Anda yakin akan menghapus <?= $penerima; ?> dari tabel?<br><br>
-                                                                <input type="hidden" name="idb" value='<?= $idb; ?>' class="form-control" required>
-                                                                <input type="hidden" name="idp" value='<?= $idp; ?>' class="form-control" required>
-                                                                <input type="hidden" name="qty" value='<?= $qty; ?>' class="form-control" required>
-                                                                <button type="submit" class="btn btn-danger" name="deletedatarental">Hapus</button>
-                                                            </div>
-                                                        </form>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                         <?php
                                         };
                                         ?>

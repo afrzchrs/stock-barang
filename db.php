@@ -452,5 +452,21 @@ if(isset($_POST['barangkembali'])){
 ?>
 
 <?php
+// Delete info barang
+if (isset($_POST['deletedatarental'])) {
+    $idb = $_POST['del_idb']; // Fix the variable name here
 
+    $gambar = mysqli_query($conn,"select * from peminjaman where idbarang='$idb'");
+    $get = mysqli_fetch_array($gambar);
+    $img = 'image/'.$get['image'];
+    unlink($img);
+
+    $hapus = mysqli_query($conn, "DELETE FROM peminjaman WHERE idbarang='$idb'");
+    if ($hapus) {
+        header("location:index.php");
+    } else {
+        echo 'fail';
+        header('location:index.php');
+    }
+}
 ?>
