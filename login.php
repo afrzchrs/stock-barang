@@ -9,7 +9,7 @@ if (isset($_POST['login'])) {
     if (empty($email) || empty($password)) {
         header("location: login.php");
     } else {
-        $query_sql = "SELECT * FROM account WHERE email = '$email' AND password = '$password'";
+        $query_sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
         $query_result = mysqli_query($conn, $query_sql);
         $row = mysqli_num_rows($query_result);
 

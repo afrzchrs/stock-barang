@@ -11,19 +11,10 @@ require 'cek.php';
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Sewa Barang</title>
+    <title>Dashboard - SB Admin</title>
     <link href="css/styles.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
-    <style>
-        .zoomable{
-            width: 100px;
-        }
-        .zoomable:hover{
-            transform: scale(2.5);
-            transition: 0.3s ease;
-        }
-    </style>
 </head>
 
 <body class="sb-nav-fixed">
@@ -49,8 +40,8 @@ require 'cek.php';
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
-                    <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Core</div>
+                <div class="nav">
+                        <div class="sb-sidenav-menu-heading"><strong>Kelola Data Barang</strong></div>
                         <a class="nav-link" href="index.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Stock Barang
@@ -63,6 +54,16 @@ require 'cek.php';
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Stock Keluar
                         </a>
+                        <div class="sb-sidenav-menu-heading"><strong>Kelola Data lainnnya</strong></div>
+                        <a class="nav-link" href="supplier.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Kelola Supplier
+                        </a>
+                        <a class="nav-link" href="pelanggan.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Kelola Pelanggan
+                        </a>
+                        <div class="sb-sidenav-menu-heading"><strong>Kelola Data Users</strong></div>
                         <a class="nav-link" href="admin.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Kelola Admin
@@ -80,92 +81,104 @@ require 'cek.php';
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid">
-                    <h1 class="mt-4">Data Barang Sewa</h1>
+                    <h1 class="mt-4">KELOLA SUPPLIER</h1>
                     <div class="card mb-4">
                         <div class="card-header">
                             <!-- Button to Open the Modal -->
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                                Tambah Data Penyewaan
+                                Tambah SUPPLIER
                             </button>
-                            
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
+                                    <thead>
                                         <tr>
-                                            <th>tanggal</th>
-                                            <th>Gambar</th>
-                                            <th>Nama Barang</th>
-                                            <th>Jumlah</th>
-                                            <th>Penerima</th>
-                                            <th>Status</th>
+                                            <th>No</th>
+                                            <th>Supplier</th>
+                                            <th>No Telepon</th>
+                                            <th>Alamat</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $takeall = mysqli_query($conn, 'SELECT * FROM peminjaman p, stock s WHERE s.idbarang = p.idbarang ');
+                                        $takeallsup = mysqli_query($conn, 'SELECT * FROM supplier');
                                         $i = 1; // Move the initialization outside the loop
-                                        while ($takerow = mysqli_fetch_array($takeall)) {
-                                            $idb = $takerow['idbarang'];
-                                            $idp = $takerow['idpeminjam'];
-                                            $tanggal = $takerow['tanggalpeminjam'];
-                                            $namabarang = $takerow['namabarang']; // Corrected column name
-                                            $penerima = $takerow['peminjam'];
-                                            $qty = $takerow['qty'];
-                                            $status = $takerow['status'];
-                                            $image = $takerow['image'];
-                                            if($image==null){
-                                                //jika tidak ada 
-                                                $img = 'No Photo';
-                                            }else{
-                                                //jika ada
-                                                $img = '<img src="image/'.$image.'" class="zoomable">';
-                                            }
+                                        while ($takerow = mysqli_fetch_array($takeallsup)) {
+                                            $sup = $takerow['nama_supplier'];
+                                            $idsup  = $takerow['id_supplier'];
+                                            $no_tel = $takerow['no_telpon'];
+                                            $alamat = $takerow['Alamat'];
                                         ?>
                                             <tr>
-                                                <td><?= $tanggal; ?></td>
-                                                <td><?= $img;?></td>
-                                                <td><?= $namabarang; ?></td> <!-- Corrected variable name -->
-                                                <td><?= $qty; ?></td>
-                                                <td><?= $penerima; ?></td>
-                                                <td><?= $status; ?></td>
+                                                <td><?= $i++; ?></td>
+                                                <td><?= $sup; ?></td>
+                                                <td><?= $no_tel; ?></td>
+                                                <td><?= $alamat; ?></td>
                                                 <td>
-                                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#edit<?= $idp ?>">
-                                                        Selesai
+                                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit<?= $idsup ?>">
+                                                        Edit
+                                                    </button>
+                                                    <input type="hidden" name="hapusidbarang" value="<?= $idsup; ?>">
+                                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete<?= $idsup ?>">
+                                                        Delete
                                                     </button>
                                                 </td>
                                             </tr>
-                                            <!-- Modal Selesai -->
-                                            <div class="modal fade" id="edit<?= $idp; ?>">
+                                            <!-- The Edit Modal -->
+                                            <div class="modal fade" id="edit<?= $idsup; ?>">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
 
                                                         <!-- Modal Header -->
                                                         <div class="modal-header">
-                                                            <h4 class="modal-title">Selesaikan ?</h4>
+                                                            <h4 class="modal-title">Edit Data Admin</h4>
                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                         </div>
 
                                                         <!-- Modal body -->
                                                         <form method="post">
                                                             <div class="modal-body">
-                                                                Apakah peminjaman barang ini sudah selesai dirental?<br>
-                                                                <input type="hidden" name="idp" value='<?= $idp; ?>' class="form-control" required>
-                                                                <input type="hidden" name="idb" value='<?= $idb; ?>' class="form-control" required><br>
-                                                                <button type="submit" class="btn btn-primary" name="barangkembali">YES</button>
+                                                                <input type="text" name="supplier" value='<?= $sup; ?>' placeholder="supplier" class="form-control" required><br>
+                                                                <input type="number" name="no_tel" class="form-control" value="<? $no_tel; ?>"placeholder="Nomor telepon" required><br>
+                                                                <input type="text" name="alamat" value='<?= $alamat; ?>' class="form-control" required placeholder="Alamat" ><br>
+                                                                <input type="hidden" name="idsup" value='<?= $idsup; ?>' class="form-control" required><br>
+                                                                <button type="submit" class="btn btn-primary" name="updatesup">Submit</button>
                                                             </div>
-                                                            
                                                         </form>
 
                                                     </div>
                                                 </div>
                                             </div>
+                                            
+                                            <!-- The Delete Modal -->
+                                            <div class="modal fade" id="delete<?= $idsup; ?>">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+
+                                                        <!-- Modal Header -->
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">Hapus Data Admin?</h4>
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        </div>
+
+                                                        <!-- Modal body -->
+                                                        <form method="post">
+                                                            <div class="modal-body">
+                                                                Apakah Anda yakin akan menghapus <?= $sup; ?> dari tabel?<br><br>
+                                                                <input type="hidden" name="delete_idsup" value='<?= $idsup; ?>' class="form-control" required><br>
+                                                                <button type="submit" class="btn btn-danger" name="deletesup">Hapus</button>
+                                                            </div>
+                                                        </form>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         <?php
                                         };
                                         ?>
-
                                     </tbody>
                                 </table>
                             </div>
@@ -204,36 +217,20 @@ require 'cek.php';
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Tambah Data Rental</h4>
+                <h4 class="modal-title">Tambah Supplier</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-
 
             <!-- Modal body -->
             <form method="post">
                 <div class="modal-body">
-
-                    <select name="barang" class="form-control">
-                        <?php
-                        $all = mysqli_query($conn, "SELECT * from stock");
-                        while ($fetch = mysqli_fetch_array($all)) {
-                            $namabarang = $fetch['namabarang'];
-                            $idbarang = $fetch['idbarang'];
-                        ?>
-
-                            <option value="<?= $idbarang; ?>"><?= $namabarang; ?></option>
-                        <?php
-                        }
-                        ?>
-                    </select>
-
-                    <br>
-                    <input type="number" name="qty" placeholder="Quantity" class="form-control" required><br>
-                    <input type="text" name="penerima" placeholder="Penerima" class="form-control" required><br>
-
-                    <button type="submit" class="btn btn-primary" name="rental">Submit</button>
+                    <input type="text" name="supplier" placeholder="Supplier" class="form-control" required><br>
+                    <input type="number" name="no_tel" placeholder="No_telepon" class="form-control" required><br>
+                    <input type="text" name="alamat" placeholder="Alamat" class="form-control" required><br>
+                    <button type="submit" class="btn btn-primary" name="addsupplier">Submit</button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>

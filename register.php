@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password = $_POST["password"];
     $email = $_POST["email"];
 
-    $query_sql = "INSERT INTO account (username, password, email) VALUES ('$username', '$password', '$email')";
+    $query_sql = "INSERT INTO users (username, password, email) VALUES ('$username', '$password', '$email')";
 
     if (mysqli_query($conn, $query_sql)) {
         header("Location: login.php");

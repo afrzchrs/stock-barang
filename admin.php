@@ -40,8 +40,8 @@ require 'cek.php';
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
-                    <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Core</div>
+                <div class="nav">
+                        <div class="sb-sidenav-menu-heading"><strong>Kelola Data Barang</strong></div>
                         <a class="nav-link" href="index.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Stock Barang
@@ -54,13 +54,19 @@ require 'cek.php';
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Stock Keluar
                         </a>
+                        <div class="sb-sidenav-menu-heading"><strong>Kelola Data lainnnya</strong></div>
+                        <a class="nav-link" href="supplier.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Kelola Supplier
+                        </a>
+                        <a class="nav-link" href="pelanggan.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Kelola Pelanggan
+                        </a>
+                        <div class="sb-sidenav-menu-heading"><strong>Kelola Data Users</strong></div>
                         <a class="nav-link" href="admin.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Kelola Admin
-                        </a>
-                        <a class="nav-link" href="peminjaman.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Penyewaan Barang
                         </a>
                     </div>
                 </div>
@@ -95,12 +101,13 @@ require 'cek.php';
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $takealladmin = mysqli_query($conn, 'SELECT * FROM account');
+                                        $takealladmin = mysqli_query($conn, 'SELECT * FROM users');
                                         $i = 1; // Move the initialization outside the loop
                                         while ($takerow = mysqli_fetch_array($takealladmin)) {
                                             $em = $takerow['email'];
                                             $iduser   = $takerow['id'];
                                             $pw =$takerow['password'];
+                                            $username = $takerow['username'];
                                         ?>
                                             <tr>
                                                 <td><?= $i++; ?></td>
@@ -129,6 +136,7 @@ require 'cek.php';
                                                         <!-- Modal body -->
                                                         <form method="post">
                                                             <div class="modal-body">
+                                                                <input type="text" name="usernamebaru" class="form-control" value='<?= $username; ?>' placeholder="username" required><br>
                                                                 <input type="email" name="emailadmin" value='<?= $em; ?>' placeholder="Email" class="form-control" required><br>
                                                                 <input type="password" name="passwordbaru" class="form-control" value="<? $pw ?>"placeholder="Password" required><br>
                                                                 <input type="hidden" name="iduser" value='<?= $iduser; ?>' class="form-control" required><br>
@@ -211,6 +219,7 @@ require 'cek.php';
             <!-- Modal body -->
             <form method="post">
                 <div class="modal-body">
+                    <input type="text" name="username" class="form-control" placeholder="username" required><br>
                     <input type="email" name="email" placeholder="Email" class="form-control" required><br>
                     <input type="password" name="password" placeholder="password" class="form-control" required><br>
                     <button type="submit" class="btn btn-primary" name="addadmin">Submit</button>

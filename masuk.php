@@ -49,8 +49,8 @@ require 'cek.php';
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
-                    <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Core</div>
+                <div class="nav">
+                        <div class="sb-sidenav-menu-heading"><strong>Kelola Data Barang</strong></div>
                         <a class="nav-link" href="index.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Stock Barang
@@ -63,13 +63,19 @@ require 'cek.php';
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Stock Keluar
                         </a>
+                        <div class="sb-sidenav-menu-heading"><strong>Kelola Data lainnnya</strong></div>
+                        <a class="nav-link" href="supplier.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Kelola Supplier
+                        </a>
+                        <a class="nav-link" href="pelanggan.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Kelola Pelanggan
+                        </a>
+                        <div class="sb-sidenav-menu-heading"><strong>Kelola Data Users</strong></div>
                         <a class="nav-link" href="admin.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Kelola Admin
-                        </a>
-                        <a class="nav-link" href="peminjaman.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Penyewaan Barang
                         </a>
                     </div>
                 </div>
@@ -91,7 +97,7 @@ require 'cek.php';
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
                                 Tambah Barang Masuk
                             </button>
-                            <a class="btn btn-primary" href="export.php">Export data</a>
+                            
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -101,22 +107,31 @@ require 'cek.php';
                                             <th>Tanggal</th>
                                             <th>Gambar</th>
                                             <th>Nama Barang</th>
-                                            <th>Keterangan</th>
+                                            <th>Supplier</th>
                                             <th>Jumlah</th>
+                                            <th>Harga_barang(jt)</th>
+                                            <th>Total_harga(jt)</th>
                                             <th>aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $takeall = mysqli_query($conn, 'SELECT * FROM masuk m, stock s where s.idbarang = m.idbarang ');
+                                        $takeall = mysqli_query($conn, 'SELECT *
+                                        FROM stock_barang s
+                                        JOIN barang_masuk m ON s.idbarang = m.idbarang
+                                        JOIN supplier a ON a.id_supplier = m.id_supplier;
+                                        ');
                                         $i = 1; // Move the initialization outside the loop
                                         while ($takerow = mysqli_fetch_array($takeall)) {
                                             $idb = $takerow['idbarang'];
                                             $idm = $takerow['idmasuk'];
                                             $tanggal = $takerow['tanggal'];
                                             $idbarang = $takerow['namabarang'];
-                                            $keterangan = $takerow['keterangan'];
+                                            $Supplier = $takerow['nama_supplier'];
+                                            $ids = $takerow['id_supplier'];
                                             $qty = $takerow['qty'];
+                                            $harga_barang = $takerow['harga_barang_masuk'];
+                                            $total_harga= $takerow['total_harga_masuk'];
                                             
                                             // cek ada gambbar atau tidak
                                             $gambar = $takerow['image'];
@@ -132,8 +147,10 @@ require 'cek.php';
                                                 <td><?= $tanggal; ?></td>
                                                 <td><?= $img; ?></td>
                                                 <td><?= $idbarang; ?></td>
-                                                <td><?= $keterangan; ?></td>
+                                                <td><?= $Supplier; ?></td>
                                                 <td><?= $qty; ?></td>
+                                                <td><?= $harga_barang; ?></td>
+                                                <td><?= $total_harga; ?></td>
                                                 <td>
                                                     <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit<?= $idb ?>">
                                                         Edit
@@ -158,9 +175,32 @@ require 'cek.php';
                                                         <!-- Modal body -->
                                                         <form method="post" enctype="multipart/form-data">
                                                             <div class="modal-body">
-                                                                <input type="text" name="namabarang" value='<?= $idbarang; ?>' class="form-control" required><br>
-                                                                <input type="text" name="keterangan" value='<?= $keterangan; ?>' class="form-control" required><br>
+                                                                <select name="barang" class="form-control">
+                                                                    <?php
+                                                                    $all = mysqli_query($conn, "SELECT * from stock_barang, supplier");
+                                                                    while ($fetch = mysqli_fetch_array($all)) {
+                                                                        $namabarang = $fetch['namabarang'];
+                                                                        $idbarang = $fetch['idbarang'];
+                                                                    ?>
+                                                                        <option value="<?= $idbarang; ?>"><?= $namabarang; ?></option>
+                                                                    <?php
+                                                                    }
+                                                                    ?>
+                                                                </select><br>
+                                                                <select name="Supplier" class="form-control">
+                                                                    <?php
+                                                                    $all = mysqli_query($conn, "SELECT * from supplier");
+                                                                    while ($fetch = mysqli_fetch_array($all)) {
+                                                                        $nama_supplier = $fetch['nama_supplier'];
+                                                                        $id_supplier = $fetch['id_supplier'];
+                                                                    ?>
+                                                                        <option value="<?= $id_supplier; ?>"><?= $nama_supplier; ?></option>
+                                                                    <?php
+                                                                    }
+                                                                    ?>
+                                                                </select><br>
                                                                 <input type="number" name="qty" value='<?= $qty; ?>' class="form-control" required><br>
+                                                                <input type="number" name="harga" value='<?= $harga_barang; ?>' class="form-control" required><br>
                                                                 <input type="file" name="file" class="form-control"><br>
                                                                 <input type="hidden" name="idb" value='<?= $idb; ?>' class="form-control" required>
                                                                 <input type="hidden" name="idm" value='<?= $idm; ?>' class="form-control" required>
@@ -188,7 +228,9 @@ require 'cek.php';
                                                                 Apakah Anda yakin akan menghapus <?= $idbarang; ?> dari tabel?<br><br>
                                                                 <input type="hidden" name="idb" value='<?= $idb; ?>' class="form-control" required>
                                                                 <input type="hidden" name="idm" value='<?= $idm; ?>' class="form-control" required>
+                                                                <input type="hidden" name="supplier" value='<?= $Supplier; ?>' class="form-control" required>
                                                                 <input type="hidden" name="qty" value='<?= $qty; ?>' class="form-control" required>
+                                                                <input type="hidden" name="harga" value='<?= $harga_barang; ?>' class="form-control" required>
                                                                 <button type="submit" class="btn btn-danger" name="deletebarangmasuk">Hapus</button>
                                                             </div>
                                                         </form>
@@ -249,22 +291,33 @@ require 'cek.php';
 
                     <select name="barang" class="form-control">
                         <?php
-                        $all = mysqli_query($conn, "SELECT * from stock");
+                        $all = mysqli_query($conn, "SELECT * from stock_barang, supplier");
                         while ($fetch = mysqli_fetch_array($all)) {
                             $namabarang = $fetch['namabarang'];
                             $idbarang = $fetch['idbarang'];
                         ?>
-
                             <option value="<?= $idbarang; ?>"><?= $namabarang; ?></option>
                         <?php
                         }
                         ?>
                     </select>
-
                     <br>
                     <input type="number" name="qty" placeholder="Quantity" class="form-control" required><br>
-                    <input type="text" name="keterangan" placeholder="Keterangan" class="form-control" required><br>
-
+                    <select name="Supplier" class="form-control">
+                        <?php
+                        $all = mysqli_query($conn, "SELECT * from supplier");
+                        while ($fetch = mysqli_fetch_array($all)) {
+                            $nama_supplier = $fetch['nama_supplier'];
+                            $id_supplier = $fetch['id_supplier'];
+                        ?>
+                            <option value="<?= $id_supplier; ?>"><?= $nama_supplier; ?></option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+                    <br>
+                    <input type="number" name="harga" placeholder="harga_barang" class="form-control" required><br>
+                    <input type="file" name="file" class="form-control"><br>
                     <button type="submit" class="btn btn-primary" name="barangmasuk">Submit</button>
                 </div>
             </form>

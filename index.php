@@ -50,7 +50,7 @@ require 'cek.php';
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Core</div>
+                        <div class="sb-sidenav-menu-heading"><strong>Kelola Data Barang</strong></div>
                         <a class="nav-link" href="index.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Stock Barang
@@ -63,13 +63,19 @@ require 'cek.php';
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Stock Keluar
                         </a>
+                        <div class="sb-sidenav-menu-heading"><strong>Kelola Data lainnnya</strong></div>
+                        <a class="nav-link" href="supplier.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Kelola Supplier
+                        </a>
+                        <a class="nav-link" href="pelanggan.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Kelola Pelanggan
+                        </a>
+                        <div class="sb-sidenav-menu-heading"><strong>Kelola Data Users</strong></div>
                         <a class="nav-link" href="admin.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Kelola Admin
-                        </a>
-                        <a class="nav-link" href="peminjaman.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Penyewaan Barang
                         </a>
                     </div>
                 </div>
@@ -89,14 +95,14 @@ require 'cek.php';
                         <div class="card-header">
                             <!-- Button to Open the Modal -->
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                                Tambah Barang
+                                Tambah Barang Baru
                             </button>
                             <a class="btn btn-primary" href="export.php">Export data</a>
                         </div>
                         <div class="card-body">
 
                             <?php
-                            $ambildatastock = mysqli_query($conn,"select * from stock where stock < 1");
+                            $ambildatastock = mysqli_query($conn,"select * from stock_barang where stock < 1");
                                 while($fetch=mysqli_fetch_array($ambildatastock)){
                                     $barang = $fetch['namabarang'];
                                 
@@ -119,15 +125,19 @@ require 'cek.php';
                                             <th>Nama Barang</th>
                                             <th>Deskripsi</th>
                                             <th>Stock</th>
+                                            <th>Harga_barang(jt)</th>
+                                            <th>Total_harga(jt)</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $takeall = mysqli_query($conn, 'SELECT * FROM stock');
+                                        $takeall = mysqli_query($conn, 'SELECT * FROM stock_barang');
                                         $i = 1; // Move the initialization outside the loop
                                         while ($takerow = mysqli_fetch_array($takeall)) {
                                             $namabarang = $takerow['namabarang'];
+                                            $total_harga = $takerow['total_harga'];
+                                            $harga_barang = $takerow['harga_barang'];
                                             $deskripsi = $takerow['deskripsi'];
                                             $stock = $takerow['stock'];
                                             $idb   = $takerow['idbarang'];
@@ -149,6 +159,8 @@ require 'cek.php';
                                                 <td><?= $namabarang; ?></td>
                                                 <td><?= $deskripsi; ?></td>
                                                 <td><?= $stock; ?></td>
+                                                <td><?= $harga_barang; ?></td>
+                                                <td><?= $total_harga; ?></td>
                                                 <td>
                                                     <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit<?= $idb ?>">
                                                         Edit
@@ -176,6 +188,7 @@ require 'cek.php';
                                                                 <input type="text" name="namabarang" value='<?= $namabarang; ?>' class="form-control" required><br>
                                                                 <input type="text" name="deskripsi" value='<?= $deskripsi; ?>' class="form-control" required><br>
                                                                 <input type="number" name="stock" value='<?= $stock; ?>' class="form-control" required><br>
+                                                                <input type="number" name="harga" value='<?= $harga_barang; ?>' class="form-control" required><br>
                                                                 <input type="file" name="file" class="form-control"><br>
                                                                 <input type="hidden" name="idb" value='<?= $idb; ?>' class="form-control" required><br>
                                                                 <button type="submit" class="btn btn-primary" name="updatebarang">Submit</button>
@@ -260,6 +273,7 @@ require 'cek.php';
                     <input type="text" name="namabarang" placeholder="Nama Barang" class="form-control" required><br>
                     <input type="text" name="deskripsi" placeholder="Deskripsi barang" class="form-control" required><br>
                     <input type="number" name="stock" placeholder="Stock" class="form-control" required><br>
+                    <input type="number" name="harga" placeholder="harga_barang" class="form-control" required><br>
                     <input type="file" name="file" class="form-control"><br>
                     <button type="submit" class="btn btn-primary" name="addnewbarang">Submit</button>
                 </div>
