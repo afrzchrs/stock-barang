@@ -29,14 +29,14 @@ if (isset($_POST['addnewbarang'])) {
     //penamaan file -> enkripsi
     $image = md5(uniqid($nama,true) . time()).'.'.$ekstensi;
     
-    $cek = mysqli_query($conn,"select * from stock_barang where namabarang='$namabarang'");
+    $cek = mysqli_query($conn,"select * from barang where namabarang='$namabarang'");
     $hitung = mysqli_num_rows($cek);
 
     if($hitung<1){
         //jika belum ada 
         if($ukuran==0){
             //jika tidak ingin upload
-            $add = mysqli_query($conn, "INSERT INTO stock_barang (namabarang, deskripsi, stock, harga_barang, total_harga) values('$namabarang', '$deskripsi','$stock','$harga','$total_harga')");
+            $add = mysqli_query($conn, "INSERT INTO barang (namabarang, deskripsi, stock, harga_barang, total_harga) values('$namabarang', '$deskripsi','$stock','$harga','$total_harga')");
             if ($add) {
                 header('location:index.php');
             } else {
@@ -50,7 +50,7 @@ if (isset($_POST['addnewbarang'])) {
                 if($ukuran < 15000000){
                     move_uploaded_file($file_tmp,"image/".$image);
 
-                    $add = mysqli_query($conn, "INSERT INTO stock_barang (namabarang, deskripsi, stock, total_harga, image) values('$namabarang', '$deskripsi','$stock', '$total_harga', '$image')");
+                    $add = mysqli_query($conn, "INSERT INTO barang (namabarang, deskripsi, stock, total_harga, image) values('$namabarang', '$deskripsi','$stock', '$total_harga', '$image')");
                     if ($add) {
                         header('location:index.php');
                     } else {
@@ -91,7 +91,7 @@ if (isset($_POST['barangmasuk'])) {
     $harga= $_POST['harga'];
     $total_harga_masuk= $qty * $harga;
 
-    $stockcheck = mysqli_query($conn, "SELECT * FROM stock_barang where idbarang='$barang'");
+    $stockcheck = mysqli_query($conn, "SELECT * FROM barang where idbarang='$barang'");
     $takestock = mysqli_fetch_array($stockcheck);
 
     $stocknow = $takestock["stock"];
@@ -101,7 +101,7 @@ if (isset($_POST['barangmasuk'])) {
     $finalhargaupdate = $harganow + $total_harga_masuk;
 
     $addin = mysqli_query($conn, "INSERT INTO barang_masuk (id_supplier, idbarang, qty,harga_barang_masuk, total_harga_masuk) values('$supplier','$barang','$qty','$harga','$total_harga_masuk')");
-    $stockupdate = mysqli_query($conn, "UPDATE stock_barang SET stock='$finalstockupdate', total_harga='$finalhargaupdate' WHERE idbarang='$barang'");
+    $stockupdate = mysqli_query($conn, "UPDATE barang SET stock='$finalstockupdate', total_harga='$finalhargaupdate' WHERE idbarang='$barang'");
 
     if ($addin && $stockupdate) {
         header("location:masuk.php");
@@ -119,7 +119,7 @@ if (isset($_POST['barangkeluar'])) {
     $pelanggan = $_POST['Pelanggan'];
     $total_harga_keluar = $qty * $harga;
 
-    $stockcheck = mysqli_query($conn, "SELECT * FROM stock_barang where idbarang='$barang'");
+    $stockcheck = mysqli_query($conn, "SELECT * FROM barang where idbarang='$barang'");
     $takestock = mysqli_fetch_array($stockcheck);
     $stocknow = $takestock["stock"];
     $harganow = $takestock["total_harga"];
@@ -128,7 +128,7 @@ if (isset($_POST['barangkeluar'])) {
     $finalhargaupdate = $harganow - $total_harga_keluar;
 
     $addin = mysqli_query($conn, "INSERT INTO barang_keluar (id_pelanggan, idbarang, qty, harga_barang_keluar, total_harga_keluar) values('$pelanggan','$barang','$qty', '$harga','$total_harga_keluar')");
-    $stockupdate = mysqli_query($conn, "UPDATE stock_barang set stock='$finalstockupdate', total_harga='$finalhargaupdate' where idbarang='$barang'");
+    $stockupdate = mysqli_query($conn, "UPDATE barang set stock='$finalstockupdate', total_harga='$finalhargaupdate' where idbarang='$barang'");
 
     if ($addin && $stockupdate) {
         header("location:keluar.php");
@@ -161,7 +161,7 @@ if (isset($_POST['updatebarang'])) {
 
     if($ukuran==0){
         //jika tidak ingin upload
-        $update = mysqli_query($conn, "UPDATE stock_barang set namabarang='$namabarang', deskripsi='$deskripsi', stock='$stock', harga_barang='$harga', total_harga='$total_harga' where idbarang='$idb'");
+        $update = mysqli_query($conn, "UPDATE barang set namabarang='$namabarang', deskripsi='$deskripsi', stock='$stock', harga_barang='$harga', total_harga='$total_harga' where idbarang='$idb'");
         if ($update) {
             header("location:index.php");
         } else {
@@ -171,7 +171,7 @@ if (isset($_POST['updatebarang'])) {
     }else{
         //jika ingin
         move_uploaded_file($file_tmp,"image/".$image);
-        $update = mysqli_query($conn, "UPDATE stock_barang set namabarang='$namabarang', deskripsi='$deskripsi', stock='$stock', image='$image' where idbarang='$idb'");
+        $update = mysqli_query($conn, "UPDATE barang set namabarang='$namabarang', deskripsi='$deskripsi', stock='$stock', image='$image' where idbarang='$idb'");
         if ($update) {
             header("location:index.php");
         } else {
@@ -185,12 +185,12 @@ if (isset($_POST['updatebarang'])) {
 if (isset($_POST['deletebarang'])) {
     $idb = $_POST['delete_idb']; // Fix the variable name here
 
-    $gambar = mysqli_query($conn,"select * from stock_barang where idbarang='$idb'");
+    $gambar = mysqli_query($conn,"select * from barang where idbarang='$idb'");
     $get = mysqli_fetch_array($gambar);
     $img = 'image/'.$get['image'];
     unlink($img);
 
-    $hapus = mysqli_query($conn, "DELETE FROM stock_barang WHERE idbarang='$idb'");
+    $hapus = mysqli_query($conn, "DELETE FROM barang WHERE idbarang='$idb'");
     if ($hapus) {
         header("location:index.php");
     } else {
@@ -206,7 +206,7 @@ if (isset($_POST['updatebarangmasuk'])) {
     $harga_barang = $_POST['harga'];
     $total_harga = $qty * $harga_barang;
 
-    $cekstock = mysqli_query($conn, "SELECT * from stock_barang where idbarang='$idb'");
+    $cekstock = mysqli_query($conn, "SELECT * from barang where idbarang='$idb'");
     $data = mysqli_fetch_array($cekstock);
     $stockskrg = $data['stock'];
     $hargastock = $data['total_harga'];
@@ -223,7 +223,7 @@ if (isset($_POST['updatebarangmasuk'])) {
         $selisih = $qty - $qtyskrg;
         $kurangi = $stockskrg + $selisih;
     
-        $kurangistocknya = mysqli_query($conn, "UPDATE stock_barang SET stock='$kurangi', total_harga='$hargafinal' WHERE idbarang='$idb'");
+        $kurangistocknya = mysqli_query($conn, "UPDATE barang SET stock='$kurangi', total_harga='$hargafinal' WHERE idbarang='$idb'");
         $updatenya = mysqli_query($conn, "UPDATE barang_masuk SET qty='$qty', harga_barang_masuk='$harga_barang',total_harga_masuk='$total_harga' WHERE idmasuk='$idm'");
         if ($kurangistocknya && $updatenya) {
             header("location: masuk.php");
@@ -237,7 +237,7 @@ if (isset($_POST['updatebarangmasuk'])) {
     
         $selisih = $qtyskrg - $qty;
         $kurangi = $stockskrg - $selisih;
-        $kurangistock = mysqli_query($conn, "UPDATE stock_barang SET stock='$kurangi', total_harga='$hargafinal' WHERE idbarang='$idb'");
+        $kurangistock = mysqli_query($conn, "UPDATE barang SET stock='$kurangi', total_harga='$hargafinal' WHERE idbarang='$idb'");
         $updatenya = mysqli_query($conn, "UPDATE barang_masuk SET qty='$qty', harga_barang_masuk='$harga_barang', total_harga_masuk='$total_harga' WHERE idmasuk='$idm'");
         if ($kurangistock && $updatenya) {
             header("location: masuk.php");
@@ -257,7 +257,7 @@ if (isset($_POST['deletebarangmasuk'])) {
     $harga = $_POST['harga'];
     $total_harga = $qty * $harga;
 
-    $getdatastock = mysqli_query($conn, "SELECT * FROM stock_barang WHERE idbarang='$idb'");
+    $getdatastock = mysqli_query($conn, "SELECT * FROM barang WHERE idbarang='$idb'");
     $data = mysqli_fetch_array($getdatastock);
     $stock = $data["stock"];
     $harganow = $data["total_harga"];
@@ -265,7 +265,7 @@ if (isset($_POST['deletebarangmasuk'])) {
     $selisih = $stock - $qty;
     $selisih_harga = $harganow - $total_harga;
 
-    $update = mysqli_query($conn, "UPDATE stock_barang SET stock='$selisih', total_harga ='$selisih_harga' WHERE idbarang='$idb'");
+    $update = mysqli_query($conn, "UPDATE barang SET stock='$selisih', total_harga ='$selisih_harga' WHERE idbarang='$idb'");
     $hapusdata = mysqli_query($conn, "DELETE FROM barang_masuk WHERE idmasuk='$idm'");
     
     if ($hapusdata && $update) {
@@ -285,7 +285,7 @@ if (isset($_POST['updatebarangkeluar'])) {
     $harga_barang = $_POST['harga'];
     $total_harga = $qty * $harga_barang;
 
-    $cekstock = mysqli_query($conn, "SELECT * from stock_barang where idbarang='$idb'");
+    $cekstock = mysqli_query($conn, "SELECT * from barang where idbarang='$idb'");
     $data = mysqli_fetch_array($cekstock);
     $stockskrg = $data['stock'];
     $hargastock = $data['total_harga'];
@@ -302,7 +302,7 @@ if (isset($_POST['updatebarangkeluar'])) {
         $selisih = $qty - $qtyskrg;
         $kurangi = $stockskrg - $selisih;
     
-        $kurangistocknya = mysqli_query($conn, "UPDATE stock_barang SET stock='$kurangi', total_harga='$hargafinal' WHERE idbarang='$idb'");
+        $kurangistocknya = mysqli_query($conn, "UPDATE barang SET stock='$kurangi', total_harga='$hargafinal' WHERE idbarang='$idb'");
         $updatenya = mysqli_query($conn, "UPDATE barang_keluar SET qty='$qty', harga_barang_keluar='$harga_barang',total_harga_keluar='$total_harga' WHERE idkeluar='$idk'");
         if ($kurangistocknya && $updatenya) {
             header("location: keluar.php");
@@ -316,7 +316,7 @@ if (isset($_POST['updatebarangkeluar'])) {
     
         $selisih = $qtyskrg - $qty;
         $kurangi = $stockskrg + $selisih;
-        $kurangistock = mysqli_query($conn, "UPDATE stock_barang SET stock='$kurangi', total_harga='$hargafinal' WHERE idbarang='$idb'");
+        $kurangistock = mysqli_query($conn, "UPDATE barang SET stock='$kurangi', total_harga='$hargafinal' WHERE idbarang='$idb'");
         $updatenya = mysqli_query($conn, "UPDATE barang_keluar SET qty='$qty', harga_barang_keluar='$harga_barang', total_harga_keluar='$total_harga' WHERE idkeluar='$idk'");
         if ($kurangistock && $updatenya) {
             header("location: keluar.php");
@@ -336,7 +336,7 @@ if (isset($_POST['deletebarangkeluar'])) {
     $harga = $_POST['harga'];
     $total_harga_keluar = $qty * $harga;
 
-    $getdatastock = mysqli_query($conn, "SELECT * FROM stock_barang WHERE idbarang='$idb'");
+    $getdatastock = mysqli_query($conn, "SELECT * FROM barang WHERE idbarang='$idb'");
     $data = mysqli_fetch_array($getdatastock);
     $stock = $data["stock"];
     $hargastock = $data["total_harga"];
@@ -344,7 +344,7 @@ if (isset($_POST['deletebarangkeluar'])) {
     $update = $stock + $qty;
     $updateharga = $hargastock + $total_harga_keluar;
 
-    $update = mysqli_query($conn, "UPDATE stock_barang SET stock='$update', total_harga='$updateharga' WHERE idbarang='$idb'");
+    $update = mysqli_query($conn, "UPDATE barang SET stock='$update', total_harga='$updateharga' WHERE idbarang='$idb'");
     $hapusdata = mysqli_query($conn, "DELETE FROM barang_keluar WHERE idkeluar='$idk'");
 
     if ($hapusdata && $update) {

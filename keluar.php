@@ -97,7 +97,6 @@ require 'cek.php';
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
                                 Tambah Barang Keluar
                             </button>
-                            
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -117,7 +116,7 @@ require 'cek.php';
                                     <tbody>
                                         <?php
                                         $takeall = mysqli_query($conn, 'SELECT *
-                                        FROM stock_barang s
+                                        FROM barang s
                                         JOIN barang_keluar k ON s.idbarang = k.idbarang
                                         JOIN pelanggan p ON p.id_pelanggan = k.id_pelanggan;
                                         ');
@@ -179,7 +178,7 @@ require 'cek.php';
                                                                 
                                                                 <select name="barang" class="form-control">
                                                                     <?php
-                                                                    $all = mysqli_query($conn, "SELECT * from stock_barang");
+                                                                    $all = mysqli_query($conn, "SELECT * from barang");
                                                                     while ($fetch = mysqli_fetch_array($all)) {
                                                                         $namabarang = $fetch['namabarang'];
                                                                         $idbarang = $fetch['idbarang'];
@@ -295,7 +294,7 @@ require 'cek.php';
 
                     <select name="barang" class="form-control">
                         <?php
-                        $all = mysqli_query($conn, "SELECT * from stock_barang");
+                        $all = mysqli_query($conn, "SELECT * from barang");
                         while ($fetch = mysqli_fetch_array($all)) {
                             $namabarang = $fetch['namabarang'];
                             $idbarang = $fetch['idbarang'];

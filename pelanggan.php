@@ -86,8 +86,9 @@ require 'cek.php';
                         <div class="card-header">
                             <!-- Button to Open the Modal -->
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                                Tambah SUPPLIER
+                                Tambah Pelanggan
                             </button>
+                            
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">

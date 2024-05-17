@@ -97,12 +97,12 @@ require 'cek.php';
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
                                 Tambah Barang Baru
                             </button>
-                            <a class="btn btn-primary" href="export.php">Export data</a>
+                            <a href="export.php" class='btn btn-info'>Export Data</a>
                         </div>
                         <div class="card-body">
 
                             <?php
-                            $ambildatastock = mysqli_query($conn,"select * from stock_barang where stock < 1");
+                            $ambildatastock = mysqli_query($conn,"select * from barang where stock < 1");
                                 while($fetch=mysqli_fetch_array($ambildatastock)){
                                     $barang = $fetch['namabarang'];
                                 
@@ -132,7 +132,7 @@ require 'cek.php';
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $takeall = mysqli_query($conn, 'SELECT * FROM stock_barang');
+                                        $takeall = mysqli_query($conn, 'SELECT * FROM barang');
                                         $i = 1; // Move the initialization outside the loop
                                         while ($takerow = mysqli_fetch_array($takeall)) {
                                             $namabarang = $takerow['namabarang'];

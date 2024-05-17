@@ -49,7 +49,7 @@ require 'cek.php';
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
-                <div class="nav">
+                    <div class="nav">
                         <div class="sb-sidenav-menu-heading"><strong>Kelola Data Barang</strong></div>
                         <a class="nav-link" href="index.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
@@ -117,7 +117,7 @@ require 'cek.php';
                                     <tbody>
                                         <?php
                                         $takeall = mysqli_query($conn, 'SELECT *
-                                        FROM stock_barang s
+                                        FROM barang s
                                         JOIN barang_masuk m ON s.idbarang = m.idbarang
                                         JOIN supplier a ON a.id_supplier = m.id_supplier;
                                         ');
@@ -177,7 +177,7 @@ require 'cek.php';
                                                             <div class="modal-body">
                                                                 <select name="barang" class="form-control">
                                                                     <?php
-                                                                    $all = mysqli_query($conn, "SELECT * from stock_barang, supplier");
+                                                                    $all = mysqli_query($conn, "SELECT * from barang, supplier");
                                                                     while ($fetch = mysqli_fetch_array($all)) {
                                                                         $namabarang = $fetch['namabarang'];
                                                                         $idbarang = $fetch['idbarang'];
@@ -291,7 +291,7 @@ require 'cek.php';
 
                     <select name="barang" class="form-control">
                         <?php
-                        $all = mysqli_query($conn, "SELECT * from stock_barang, supplier");
+                        $all = mysqli_query($conn, "SELECT * from barang, supplier");
                         while ($fetch = mysqli_fetch_array($all)) {
                             $namabarang = $fetch['namabarang'];
                             $idbarang = $fetch['idbarang'];
